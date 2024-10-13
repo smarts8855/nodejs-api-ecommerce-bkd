@@ -12,6 +12,7 @@ import colorsRouter from "../routes/colorsRouter.js";
 import reviewRouter from "../routes/reviewsRouter.js";
 import ordersRouter from "../routes/ordersRouter.js";
 import Order from "../model/Order.js";
+import couponRouter from "../routes/couponsRouter.js";
 //db connect
 dbConnect();
 
@@ -21,8 +22,7 @@ const app = express();
 const stripe = new Stripe(process.env.STRIPE_KEY);
 
 //This is your Stripe CLI webhook secret key for testing your endpoint locally
-const endpointSecret =
-  "whsec_71fdc31749b163307304c68845ea0fb3e9e4c599602d8a5f1242231f90ce3dbd";
+const endpointSecret = process.env.WEBHOOK_SECRET_KEY;
 
 app.post(
   "/webhook",
@@ -89,6 +89,7 @@ app.use("/api/v1/brands", brandsRouter);
 app.use("/api/v1/colors", colorsRouter);
 app.use("/api/v1/reviews", reviewRouter);
 app.use("/api/v1/orders", ordersRouter);
+app.use("/api/v1/coupons", couponRouter);
 
 //err middleware
 app.use(notFound);
