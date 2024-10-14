@@ -67,7 +67,7 @@ export const createProduct = asyncHandler(async (req, res) => {
   });
 });
 
-//@desc Get all product
+//@desc Get all products
 //@route  GET/api/v1/products
 //@access public
 export const getProductsCtrl = asyncHandler(async (req, res) => {
