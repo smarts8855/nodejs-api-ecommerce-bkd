@@ -7,6 +7,7 @@ import Brand from "../model/Brand.js";
 //@route  POST/api/v1/products
 //@access private
 export const createProduct = asyncHandler(async (req, res) => {
+  const convertedImgs = req.files.map((file) => file.path);
   const {
     name,
     description,
@@ -49,6 +50,7 @@ export const createProduct = asyncHandler(async (req, res) => {
     price,
     totalQty,
     brand,
+    images: convertedImgs,
   });
   //push the product into category
   categoryFound.products.push(product._id);

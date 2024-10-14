@@ -5,6 +5,7 @@ import Stripe from "stripe";
 import User from "../model/User.js";
 import Order from "../model/Order.js";
 import Product from "../model/Product.js";
+import Coupon from "../model/Coupon.js";
 
 //@desc Create new orders
 //@route POST /api/v1/orders
@@ -14,6 +15,22 @@ import Product from "../model/Product.js";
 const stripe = new Stripe(process.env.STRIPE_KEY);
 
 export const createOrderCtrl = asyncHandler(async (req, res) => {
+  //get th coupon
+  const { coupon } = req.query;
+
+  const couponFound = await Coupon.findOne({
+    code: coupon?.toUpperCase(),
+  });
+
+  if (couponFound?.isExpired) {
+    throw new Error("Coupon has expired");
+  }
+  if (!couponFound) {
+    throw new Error("Coupon not found");
+  }
+  //get discount
+  const discount = couponFound?.discount / 100;
+
   //Get the payload(customer,orderItems,shippingAddress,totalPrice)
   const { orderItems, shippingAddress, totalPrice } = req.body;
   //Find the user
@@ -31,8 +48,9 @@ export const createOrderCtrl = asyncHandler(async (req, res) => {
     user: user?._id,
     orderItems,
     shippingAddress,
-    totalPrice,
+    totalPrice: couponFound ? totalPrice - totalPrice * discount : totalPrice,
   });
+
   //push order into user
   user.orders.push(order?._id);
   await user.save();
@@ -136,5 +154,59 @@ export const updateOrderCtrl = asyncHandler(async (req, res) => {
     success: true,
     message: "Order updated successfully",
     updatedOrder,
+  });
+});
+
+//@desc get sales sum of orders
+//@route GET /api/v1/orders/sales/sum
+//@access Private/admin
+
+export const getOrderStatsCtrl = asyncHandler(async (req, res) => {
+  //get order stats
+  const orders = await Order.aggregate([
+    {
+      $group: {
+        _id: null,
+        minimumSales: {
+          $min: "$totalPrice",
+        },
+        totalSales: {
+          $sum: "$totalPrice",
+        },
+        maxSales: {
+          $max: "$totalPrice",
+        },
+        avgSale: {
+          $avg: "$totalPrice",
+        },
+      },
+    },
+  ]);
+  //get the date
+  const date = new Date();
+  const today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  const saleToday = await Order.aggregate([
+    {
+      $match: {
+        createdAt: {
+          $gte: today,
+        },
+      },
+    },
+    {
+      $group: {
+        _id: null,
+        totalSales: {
+          $sum: "$totalPrice",
+        },
+      },
+    },
+  ]);
+
+  res.status(200).json({
+    success: true,
+    message: "Sum of orders",
+    orders,
+    saleToday,
   });
 });

@@ -20,7 +20,7 @@ export const createCouponCtrl = asyncHandler(async (req, res) => {
   }
   //create coupon
   const coupon = await Coupon.create({
-    code,
+    code: code?.toUpperCase(),
     startDate,
     endDate,
     discount,
@@ -30,5 +30,65 @@ export const createCouponCtrl = asyncHandler(async (req, res) => {
     status: "success",
     message: "Coupon created successfully",
     coupon,
+  });
+});
+
+//@desc Get All Coupon
+//@route GET /api/v1/coupons
+//@access Private/Admin
+
+export const getAllCouponsCtrl = asyncHandler(async (req, res) => {
+  const coupons = await Coupon.find();
+  res.status(200).json({
+    status: "success",
+    message: "All Coupons",
+    coupons,
+  });
+});
+
+//@desc Get Single Coupon
+//@route GET /api/v1/coupons/:id
+//@access Private/Admin
+
+export const getSingleCouponCtrl = asyncHandler(async (req, res) => {
+  const coupon = await Coupon.findById(req.params.id);
+  res.json({
+    status: "success",
+    message: "Coupon fetched successfully",
+    coupon,
+  });
+});
+//@desc Update Coupon
+//@route PUT /api/v1/coupons/update/:id
+//@access Private/Admin
+
+export const updateCouponCtrl = asyncHandler(async (req, res) => {
+  const { code, discount, startDate, endDate } = req.body;
+  const coupon = await Coupon.findByIdAndUpdate(
+    req.params.id,
+    {
+      code: code?.toUpperCase(),
+      discount,
+      startDate,
+      endDate,
+    },
+    { new: true }
+  );
+
+  res.json({
+    status: "success",
+    message: "Coupon updated successfully",
+    coupon,
+  });
+});
+//@desc Delete Coupon
+//@route DELETE /api/v1/coupons/delete/:id
+//@access Private/Admin
+
+export const deleteCouponCtrl = asyncHandler(async (req, res) => {
+  await Coupon.findByIdAndDelete(req.params.id);
+  res.json({
+    status: "success",
+    message: "Coupon deleted successfully",
   });
 });

@@ -34,10 +34,12 @@ const ProductSchema = new Schema(
       required: true,
       ref: "User",
     },
-    images: {
-      type: String,
-      default: "https://via.placeholder.com/150",
-    },
+    images: [
+      {
+        type: String,
+        required: true,
+      },
+    ],
     reviews: [
       {
         type: mongoose.Schema.Types.ObjectId,
