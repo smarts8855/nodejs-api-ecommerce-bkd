@@ -12,7 +12,7 @@ const CategorySchema = new Schema(
       ref: "User",
       required: true,
     },
-    image: {
+    file: {
       type: String,
       required: true,
     },

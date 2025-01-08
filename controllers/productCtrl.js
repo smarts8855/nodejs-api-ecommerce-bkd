@@ -7,7 +7,7 @@ import Brand from "../model/Brand.js";
 //@route  POST/api/v1/products
 //@access private
 export const createProduct = asyncHandler(async (req, res) => {
-  const convertedImgs = req.files.map((file) => file.path);
+  const convertedImgs = req.files?.map((file) => file.path);
   const {
     name,
     description,
@@ -118,7 +118,7 @@ export const getProductsCtrl = asyncHandler(async (req, res) => {
   //page
   const page = parseInt(req.query.page) ? parseInt(req.query.page) : 1;
   //limit
-  const limit = parseInt(req.query.limit) ? parseInt(req.query.limit) : 1;
+  const limit = parseInt(req.query.limit) ? parseInt(req.query.limit) : 10;
   //startIdx
   const startIndex = (page - 1) * limit;
   //endIdx
