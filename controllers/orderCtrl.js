@@ -29,7 +29,7 @@ export const createOrderCtrl = asyncHandler(async (req, res) => {
     throw new Error("Coupon not found");
   }
   //get discount
-  const discount = couponFound?.discount / 100;
+  // const discount = couponFound?.discount / 100;
 
   //Get the payload(customer,orderItems,shippingAddress,totalPrice)
   const { orderItems, shippingAddress, totalPrice } = req.body;
