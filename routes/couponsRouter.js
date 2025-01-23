@@ -13,7 +13,7 @@ const couponRouter = express.Router();
 
 couponRouter.post("/", isLoggedIn, isAdmin, createCouponCtrl);
 couponRouter.get("/", getAllCouponsCtrl);
-couponRouter.get("/:id", getSingleCouponCtrl);
+couponRouter.get("/single", getSingleCouponCtrl);
 couponRouter.put("/update/:id", isLoggedIn, isAdmin, updateCouponCtrl);
 couponRouter.delete("/delete/:id", isLoggedIn, isAdmin, deleteCouponCtrl);
 
