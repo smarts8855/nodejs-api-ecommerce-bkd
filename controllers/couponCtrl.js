@@ -51,7 +51,7 @@ export const getAllCouponsCtrl = asyncHandler(async (req, res) => {
 //@access Private/Admin
 
 export const getSingleCouponCtrl = asyncHandler(async (req, res) => {
-  const coupon = await Coupon.findOne({ code: req.body.code });
+  const coupon = await Coupon.findOne({ code: req.query.code });
   // check if not found
   if (coupon === null) {
     throw new Error("Coupon not found");
