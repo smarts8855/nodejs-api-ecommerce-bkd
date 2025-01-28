@@ -11,7 +11,7 @@ import isAdmin from "../middlewares/isAdmin.js";
 
 const couponRouter = express.Router();
 
-// couponRouter.post("/", isLoggedIn, isAdmin, createCouponCtrl);
+couponRouter.post("/", isLoggedIn, isAdmin, createCouponCtrl);
 couponRouter.get("/", getAllCouponsCtrl);
 couponRouter.get("/single", getSingleCouponCtrl);
 couponRouter.put("/update/:id", isLoggedIn, isAdmin, updateCouponCtrl);
