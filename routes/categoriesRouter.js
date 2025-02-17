@@ -19,7 +19,7 @@ categoriesRouter.post(
   upload.single("file"),
   createCategoryCtrl
 );
-// categoriesRouter.get("/", getAllCategoriesCtrl);
+categoriesRouter.get("/", getAllCategoriesCtrl);
 categoriesRouter.get("/:id", getSingleCategoryCtrl);
 categoriesRouter.put("/:id", isLoggedIn, isAdmin, updateCategoryCtrl);
 categoriesRouter.delete("/:id", isLoggedIn, isAdmin, deleteCategoryCtrl);

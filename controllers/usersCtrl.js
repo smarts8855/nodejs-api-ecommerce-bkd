@@ -72,8 +72,16 @@ export const getUserProfileCtrl = asyncHandler(async (req, res) => {
 //access Private
 
 export const updateShippingAddressCtrl = asyncHandler(async (req, res) => {
-  const { firstName, lastName, address, city, postalCode, province, phone } =
-    req.body;
+  const {
+    firstName,
+    lastName,
+    address,
+    city,
+    postalCode,
+    province,
+    phone,
+    country,
+  } = req.body;
   const userUpdated = await User.findByIdAndUpdate(
     req.userAuthId,
     {
@@ -85,6 +93,7 @@ export const updateShippingAddressCtrl = asyncHandler(async (req, res) => {
         postalCode,
         province,
         phone,
+        country,
       },
       hasShippingAddress: true,
     },
