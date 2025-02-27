@@ -11,7 +11,7 @@ import isAdmin from "../middlewares/isAdmin.js";
 
 const brandsRouter = express.Router();
 
-brandsRouter.post("/", isLoggedIn, isAdmin, createBrandCtrl);
+// brandsRouter.post("/", isLoggedIn, isAdmin, createBrandCtrl);
 brandsRouter.get("/", getAllBransCtrl);
 brandsRouter.get("/:id", getSingleBrandCtrl);
 brandsRouter.put("/:id", isLoggedIn, isAdmin, updateBrandCtrl);
