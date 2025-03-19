@@ -198,7 +198,7 @@ export const updateProductCtrl = asyncHandler(async (req, res) => {
       totalQty,
       brand,
     },
-    { new: true }
+    { new: true, runValidators: true }
   );
   res.json({
     status: "success",
