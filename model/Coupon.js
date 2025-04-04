@@ -38,11 +38,12 @@ CouponSchema.virtual("isExpired").get(function () {
 });
 //check if coupon is expired
 CouponSchema.virtual("daysLeft").get(function () {
-  const daysLeft =
-    Math.ceil((this.endDate - Date.now()) / (1000 * 60 * 60 * 24)) +
-    " " +
-    "Days left";
-  return daysLeft;
+  const daysLeft = `${Math.ceil(
+    (this.endDate - Date.now()) / (1000 * 60 * 60 * 24)
+  )} Days left`;
+  return Math.ceil((this.endDate - Date.now()) / (1000 * 60 * 60 * 24)) <= 0
+    ? "Expired"
+    : daysLeft;
 });
 
 //validation
